@@ -1,111 +1,101 @@
-📊 Sales Data Analysis using SQL (SSMS)
-🚀 Project Overview
+# Sales Data SQL Analysis
 
-This project focuses on performing end-to-end sales data analysis using SQL Server Management Studio (SSMS). The objective of this project is to transform raw sales data into meaningful business insights that support data-driven decision-making.
+A SQL-based exploratory data analysis (EDA) and business intelligence project built on a sample sales dataset (`sales_data_sample`). The project walks through data exploration, cleaning, and a series of queries designed to answer core business questions about revenue, customers, regions, products, and trends.
 
-The project includes:
+## 📊 Project Overview
 
-Database creation
-Table design
-CSV data import
-Data cleaning
-Exploratory Data Analysis (EDA)
-Business insights generation using SQL queries
-🎯 Objectives
-Analyze overall sales performance
-Identify top customers and high-performing products
-Understand regional sales trends
-Detect monthly and quarterly revenue patterns
-Generate actionable business insights
-🛠️ Tech Stack
-SQL Server Management Studio (SSMS)
-SQL (T-SQL)
-CSV Dataset
-🗄️ Database Design
-Database Name
-SalesProjectDB
-Table Name
-SalesData
-📥 Data Import Process
-Imported CSV dataset using Import Flat File Wizard
-Verified column names and data types
-Loaded data into SQL Server table
-🧹 Data Cleaning
+**Goal:** Use SQL to measure revenue performance, identify top customers, analyze trends, and support business decisions.
 
-Performed:
+The dataset (`sales_data_sample`) contains **2,823 records** across **19 countries**, representing **307 unique orders** from **92 customers**.
 
-Null value checks
-Duplicate record validation
-Date format conversion
-Data consistency verification
+## 🗂️ Table of Contents
 
-Example:
+1. [Business Understanding](#1-business-understanding)
+2. [Data Exploration (EDA)](#2-data-exploration-eda)
+3. [Data Cleaning](#3-data-cleaning)
+4. [Core Business Metrics](#4-core-business-metrics)
+5. [Trend Analysis](#5-trend-analysis)
+6. [Regional Analysis](#6-regional-analysis)
+7. [Customer Analysis](#7-customer-analysis)
+8. [Product Analysis](#8-product-analysis)
+9. [Deal Size Analysis](#9-deal-size-analysis)
+10. [Business Insights](#10-business-insights)
 
-SELECT *
-FROM SalesData
-WHERE Sales IS NULL;
-📊 Exploratory Data Analysis (EDA)
-Total Revenue
-SELECT SUM(Sales) AS TotalRevenue
-FROM SalesData;
-Total Orders
-SELECT COUNT(DISTINCT OrderNumber) AS TotalOrders
-FROM SalesData;
-Total Customers
-SELECT COUNT(DISTINCT CustomerName) AS TotalCustomers
-FROM SalesData;
-📈 Business Analysis
-🌍 Revenue by Country
-SELECT 
-    Country,
-    SUM(Sales) AS Revenue
-FROM SalesData
-GROUP BY Country
-ORDER BY Revenue DESC;
-👥 Top Customers
-SELECT TOP 5
-    CustomerName,
-    SUM(Sales) AS TotalSpent
-FROM SalesData
-GROUP BY CustomerName
-ORDER BY TotalSpent DESC;
-📦 Product Performance
-SELECT 
-    ProductLine,
-    SUM(Sales) AS Revenue
-FROM SalesData
-GROUP BY ProductLine
-ORDER BY Revenue DESC;
-📅 Monthly Revenue Trend
-SELECT 
-    Year_ID,
-    Month_ID,
-    SUM(Sales) AS MonthlyRevenue
-FROM SalesData
-GROUP BY Year_ID, Month_ID
-ORDER BY Year_ID, Month_ID;
-🧠 Advanced SQL Queries
-Customer Ranking using Window Function
-SELECT 
-    CustomerName,
-    SUM(Sales) AS TotalSales,
-    RANK() OVER (ORDER BY SUM(Sales) DESC) AS CustomerRank
-FROM SalesData
-GROUP BY CustomerName;
-Running Total Revenue
-SELECT 
-    OrderDate,
-    SUM(Sales) OVER (ORDER BY OrderDate) AS RunningRevenue
-FROM SalesData;
-📌 Key Insights
-A small percentage of customers generated a large portion of revenue
-Certain countries consistently outperformed others
-Sales showed strong seasonal trends
-Some product lines contributed significantly more revenue
-Large deal sizes had major business impact
-💡 Business Recommendations
-Focus on retaining high-value customers
-Increase investment in top-performing regions
-Plan marketing campaigns during peak sales periods
-Promote high-performing product categories
-Target larger business deals for higher revenue growth
+---
+
+## 1. Business Understanding
+
+**Goals:**
+- Measure revenue performance
+- Identify top customers
+- Analyze trends
+- Support business decisions
+
+## 2. Data Exploration (EDA)
+
+- **Total Records:** Count of all rows in the dataset using `COUNT(*)`
+- **Distinct Countries:** List of unique countries present in the data using `SELECT DISTINCT`
+
+## 3. Data Cleaning
+
+- **Remove Duplicates:** Identify duplicate `OrderNumber` entries using `GROUP BY` + `HAVING COUNT(*) > 1`
+- **Fix Date Format:** Standardize the `OrderDate` column into proper `DATETIME` format using `TRY_CONVERT`
+
+## 4. Core Business Metrics
+
+- **Total Revenue:** Sum of all sales (`SUM(Sales)`)
+- **Total Orders:** Count of distinct orders (`COUNT(DISTINCT OrderNumber)`)
+- **Total Customers:** Count of distinct customers (`COUNT(DISTINCT CustomerName)`)
+
+## 5. Trend Analysis
+
+- **Monthly Revenue Trend:** Revenue aggregated by `Year_ID` and `Month_ID`
+- **Quarterly Performance:** Revenue aggregated by `Year_ID` and `QTR_ID`
+
+## 6. Regional Analysis
+
+- **Revenue by Country:** Total sales grouped by country, ordered by revenue
+- **Top 3 Countries:** The three highest-revenue countries (USA, Spain, France)
+
+## 7. Customer Analysis
+
+- **Top 5 Customers:** Highest-spending customers using `TOP 5` with `SUM(Sales)`
+- **Customer Ranking:** Full customer ranking using the `RANK()` window function
+
+## 8. Product Analysis
+
+- **Sales by Product Line:** Revenue grouped by `ProductLine` (e.g., Classic Cars, Vintage Cars, Motorcycles)
+
+## 9. Deal Size Analysis
+
+- **Revenue by Deal Size:** Revenue grouped by `DealSize` (Small, Medium, Large)
+- **Running Total Revenue:** Cumulative revenue over time using a window function (`SUM(Sales) OVER (ORDER BY OrderDate)`)
+- **Moving Average (3 Months):** Rolling 3-period average revenue using `AVG(Sales) OVER (... ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)`
+
+## 10. Business Insights
+
+Key takeaways from the analysis:
+
+- 💰 Revenue is **concentrated among top customers**
+- 🌍 Certain **countries dominate** sales performance
+- 📈 Sales show **seasonal peaks**
+- 🚗 Specific **product lines generate maximum revenue**
+- 📦 **Large deals** significantly impact overall revenue
+
+---
+
+## 🛠️ Tech Stack
+
+- **SQL Server** (T-SQL syntax: `TOP`, `TRY_CONVERT`, window functions)
+- Sample dataset: `sales_data_sample`
+
+## 🚀 How to Use
+
+1. Load the `sales_data_sample` dataset into your SQL Server instance.
+2. Run the queries in order (EDA → Cleaning → Metrics → Trends → Regional → Customer → Product → Deal Size).
+3. Review the business insights generated from the aggregated results.
+
+## 📌 Notes
+
+- Queries use T-SQL syntax; minor adjustments may be needed for MySQL/PostgreSQL (e.g., replace `TOP N` with `LIMIT N`, and `TRY_CONVERT` with equivalent date-casting functions).
+- Window functions (`RANK()`, `SUM() OVER`, `AVG() OVER`) require SQL Server 2012+ or an equivalent modern SQL engine.
